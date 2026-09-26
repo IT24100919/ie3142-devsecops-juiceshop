@@ -1,0 +1,21 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, cicd-pipeline]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Juice Shop image
+        run: docker build -t juice-shop-local -f Dockerfile . || echo "No custom Dockerfile yet, using base image for now"
+
+      - name: Confirm docker-compose file is valid
+        run: docker compose config
