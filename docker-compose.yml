@@ -1,6 +1,7 @@
 services:
   juice-shop:
-    image: bkimminich/juice-shop
+    build:
+      context: ./juice-shop-src
     container_name: juice-shop
     networks:
       - internal
