@@ -19,3 +19,12 @@ jobs:
 
       - name: Confirm docker-compose file is valid
         run: docker compose config
+
+      - name: Run Semgrep SAST scan
+        run: |
+          docker run --rm -v ${{ github.workspace }}/juice-shop-src:/src returntocorp/semgrep semgrep --config=auto /src --error
+
+      - name: Run npm audit
+        run: |
+          cd juice-shop-src
+          npm audit --audit-level=high
