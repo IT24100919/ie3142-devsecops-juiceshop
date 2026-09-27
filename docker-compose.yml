@@ -3,6 +3,8 @@ services:
     build:
       context: ./juice-shop-src
     container_name: juice-shop
+    env_file:
+      - .env
     networks:
       - internal
 
