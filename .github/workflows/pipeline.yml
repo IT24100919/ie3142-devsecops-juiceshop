@@ -27,6 +27,14 @@ jobs:
       - name: Confirm docker-compose file is valid
         run: docker compose config
 
+      - name: Build Docker image for scanning
+        run: docker build -t juice-shop-local:scan -f juice-shop-src/Dockerfile juice-shop-src
+
+      - name: Run Trivy container scan
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy image --severity HIGH,CRITICAL --exit-code 1 juice-shop-local:scan
+
       - name: Run Semgrep SAST scan
         run: |
           docker run --rm -v ${{ github.workspace }}/juice-shop-src:/src returntocorp/semgrep semgrep --config=auto /src --error
@@ -35,6 +43,11 @@ jobs:
         run: |
           cd juice-shop-src
           npm audit --audit-level=high
+
+      - name: Run Gitleaks secrets scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove temporary .env
         if: always()
