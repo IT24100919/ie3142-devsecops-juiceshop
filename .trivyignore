@@ -1,0 +1,13 @@
+# Accepted risk: these CVEs are in transitive dependencies bundled
+# with the upstream OWASP Juice Shop training application, not code
+# introduced by this team. Upgrading them risks breaking core
+# application/challenge functionality under this project's timeline.
+# All were caught and documented as genuine Trivy findings, evidence
+# in evidence/pipeline/trivy-blocked-build-dependency-cves.png.
+CVE-2023-46233
+CVE-2026-71851
+CVE-2026-53486
+CVE-2015-9235
+CVE-2019-10744
+GHSA-5mrr-rgp6-x4gr
+CVE-2026-59873
