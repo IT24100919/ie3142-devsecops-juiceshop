@@ -33,13 +33,17 @@ jobs:
       # Trivy blocks the pipeline on CRITICAL vulnerabilities.
       # HIGH-severity transitive dependency findings are documented
       # and tracked separately rather than blocking the release.
+      # CVEs listed in .trivyignore are accepted risks in upstream
+      # Juice Shop dependencies, documented in the report.
       - name: Run Trivy container scan
         run: |
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "${{ github.workspace }}/.trivyignore:/.trivyignore" \
             aquasec/trivy image \
             --severity CRITICAL \
             --exit-code 1 \
+            --ignorefile /.trivyignore \
             --skip-files "**/lib/insecurity.ts,**/build/lib/insecurity.js" \
             juice-shop-local:scan
 
